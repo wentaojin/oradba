@@ -1,0 +1,11 @@
+[oracle]
+# 源端 oracle 连接串
+# 若需要增量数据同步，则需要 logminer 权限
+username = "marvin"
+password = "marvin"
+# 配置 oracle 连接字符串，样例：主机地址:数据库端口/实例名?参数
+connect-string = "172.16.4.65:1521/orcl?connect_timeout=2"
+# 配置 oracle 连接会话 session 变量,
+session-params = ["alter session set nls_date_format = 'yyyy-mm-dd hh24:mi:ss'"]
+# 配置 oracle 连接时区
+timezone = "Local"
