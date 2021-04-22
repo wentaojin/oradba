@@ -41,7 +41,7 @@ func QueryOracleDBSessionSIDBySPID(spid string) error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -63,7 +63,7 @@ func QueryOracleDBSessionSPIDBySID(sid string) error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -115,7 +115,7 @@ SELECT b.name, a.VALUE
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -149,7 +149,7 @@ func QueryOracleDBWaitEvent() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -164,7 +164,7 @@ func QueryOracleDBUsedUNDOTOP() error {
                v.usn,
                segment_name,
                r.status,
-               v.rssize / 1024 / 1024 mb
+               v.rssize / 1024 / 1024 As used_MB
           From dba_rollback_segs r,
                v$rollstat        v,
                v$transaction     t,
@@ -172,12 +172,12 @@ func QueryOracleDBUsedUNDOTOP() error {
          Where r.segment_id = v.usn
            and v.usn = t.xidusn
            and t.addr = s.taddr
-         order by mb desc)
+         order by used_MB desc)
  where rownum <= 10`)
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -193,7 +193,7 @@ func QueryOracleDBUsedTEMPTOP() error {
                b.segfile#,
                b.segblk#,
                b.blocks,
-               b.blocks * 32 / 1024 / 1024 as usedtempsize,
+               b.blocks * 32 / 1024 / 1024 as used_MB,
                a.osuser,
                a.status,
                c.sql_text,
@@ -206,7 +206,7 @@ func QueryOracleDBUsedTEMPTOP() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -224,8 +224,8 @@ func QueryOracleDBUsedPGATOP() error {
                   '0' || to_char(round(Value / 1024 / 1024, 6))
                  else
                   TO_CHAR(round(Value / 1024 / 1024, 6))
-               end Mb,
-               NVL(s.Sql_Id, 'NULL'),
+               end Used_Mb,
+               NVL(s.sql_Id, 'NULL') sql_id,
                Spid,
                s.status,
                s.machine
@@ -239,7 +239,7 @@ func QueryOracleDBUsedPGATOP() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -287,7 +287,7 @@ func QueryOracleDBSessionBlocking() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -395,6 +395,6 @@ func QueryOracleDBSessionBlock() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }

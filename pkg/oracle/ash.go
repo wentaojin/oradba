@@ -33,7 +33,7 @@ func QueryOracleDBASHTOPRecentAnHour() error {
          username,
          session_id,
          session_serial#,
-         nvl(sql_id, 'Null'),
+         nvl(sql_id, 'Null') sql_id,
          case SQL_OPCODE
            when 1 then
             'create table'
@@ -76,7 +76,7 @@ func QueryOracleDBASHTOPRecentAnHour() error {
            else
             'other'
          end command_type,
-         NVl(event, 'Null'),
+         NVl(event, 'Null') event,
          ROUND(COUNT(*) / (((sysdate) - (sysdate - 1 / 24)) * 86400), 1) AAS,
          COUNT(*) "TotalSeconds"
         --, SUM(CASE WHEN wait_class IS NULL           THEN 1 ELSE 0 END) "CPU"
@@ -140,7 +140,7 @@ func QueryOracleDBASHTOPRecentAnHour() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -150,11 +150,11 @@ func QueryOracleDBASHTOPRecentAnHour() error {
 func QueryOracleDBASHTOPHistoryByTimeLimit(startTime, endTime string) error {
 	columns, values, err := db.Query(fmt.Sprintf(`SELECT *
   FROM (SELECT /*+ LEADING(a) USE_HASH(u) */
-         LPAD(ROUND(RATIO_TO_REPORT(COUNT(*)) OVER() * 100) || '%', 5, ' ') "%This",
+         LPAD(ROUND(RATIO_TO_REPORT(COUNT(*)) OVER() * 100) || '%%', 5, ' ') "%%This",
          username,
          session_id,
          session_serial#,
-         nvl(sql_id, 'Null'),
+         nvl(sql_id, 'Null') sqlid,
          case SQL_OPCODE
            when 1 then
             'create table'
@@ -197,7 +197,7 @@ func QueryOracleDBASHTOPHistoryByTimeLimit(startTime, endTime string) error {
            else
             'other'
          end command_type,
-         NVl(event, 'Null'),
+         NVl(event, 'Null') event,
          ROUND(COUNT(*) / (((sysdate) - (sysdate - 1 / 24)) * 86400), 1) AAS,
          COUNT(*) "TotalSeconds"
         --, SUM(CASE WHEN wait_class IS NULL           THEN 1 ELSE 0 END) "CPU"
@@ -243,7 +243,7 @@ func QueryOracleDBASHTOPHistoryByTimeLimit(startTime, endTime string) error {
                dba_users u
          WHERE a.user_id = u.user_id(+)
            AND session_type = 'FOREGROUND'
-           AND sample_time BETWEEN '%s' AND '%s'
+           AND to_char(sample_time,'yyyy-mm-dd hh24:mi:ss') BETWEEN '%s' AND '%s'
          GROUP BY username,
                   session_id,
                   session_serial#,
@@ -261,6 +261,6 @@ func QueryOracleDBASHTOPHistoryByTimeLimit(startTime, endTime string) error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }

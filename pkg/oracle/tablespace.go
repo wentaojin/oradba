@@ -86,33 +86,33 @@ SELECT /*+ NO_MERGE */
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
 func QueryOracleDBTablespaceIOStatInfo() error {
 	columns, values, err := db.Query(`select df.tablespace_name name,
        df.file_name       "file",
-       f.phyrds           pyr,
-       f.phyblkrd         pbr,
-       f.phywrts          pyw,
-       f.phyblkwrt        pbw
+       f.phyrds           phyrds,
+       f.phyblkrd         phyblkrd,
+       f.phywrts          phywrts,
+       f.phyblkwrt        phyblkwrt
   from v$filestat f, dba_data_files df
  where f.file# = df.file_id
  order by df.tablespace_name`)
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
 func QueryOracleDBTablespaceDetailInfoByUser(username string) error {
 	columns, values, err := db.Query(fmt.Sprintf(`select tablespacename,
-       to_char(sum(totalContent)) totalSize,
-       to_char(sum(usecontent)) usedSize,
-       to_char(sum(sparecontent)) freeSize,
-       avg(sparepercent) freePercent
+       to_char(sum(totalContent)) total_Size,
+       to_char(sum(usecontent)) used_Size,
+       to_char(sum(sparecontent)) free_Size,
+       Round(100 - avg(sparepercent),2) || '%%' free_Percent
   from (SELECT b.file_id as id,
                b.tablespace_name as tablespacename,
                Round(b.bytes / 1024 / 1024 / 1024, 2) as totalContent,
@@ -135,7 +135,7 @@ func QueryOracleDBTablespaceDetailInfoByUser(username string) error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -154,6 +154,6 @@ func QueryOracleDBSysauxTablespaceInfo() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }

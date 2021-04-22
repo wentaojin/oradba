@@ -84,7 +84,7 @@ func QueryOracleDBTableColumnDetailInfo(username, tablename string) error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -106,14 +106,14 @@ func QueryOracleDBTableIndexDetailInfo(username, tablename string) error {
        GLOBAL_STATS,
        USER_STATS,
        SAMPLE_SIZE,
-       to_char(t.last_analyzed, 'MM-DD-YYYY')
+       to_char(t.last_analyzed, 'YYYY-MM-DD HH24:MM:SS') last_analyzed
   from dba_indexes t
  where upper(table_owner) = upper('%s')
    and upper(table_name) = upper('%s')`, username, tablename))
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -127,24 +127,24 @@ func QueryOracleDBTableIndexColumnDetailInfo(username, tablename string) error {
 	}
 	columns, values, err := db.Query(fmt.Sprintf(`select T.TABLE_NAME,
        T.INDEX_NAME,
-       T.INDEX_TYPE,
+       I.INDEX_TYPE,
        I.UNIQUENESS, --是否唯一索引
        --T.COLUMN_POSITION,
        LISTAGG(T.COLUMN_NAME, ',') WITHIN GROUP(ORDER BY T.COLUMN_POSITION) AS column_list
   FROM ALL_IND_COLUMNS T, ALL_INDEXES I, ALL_CONSTRAINTS C
  WHERE T.INDEX_NAME = I.INDEX_NAME
    AND T.INDEX_NAME = C.CONSTRAINT_NAME(+)
-   AND C.CONSTRAINT_TYPE is Null --排除主键、唯一约束索引
+   -- AND C.CONSTRAINT_TYPE is Null --排除主键、唯一约束索引
    AND T.TABLE_OWNER = upper('%s')
    AND T.TABLE_NAME = upper('%s')
  group by T.TABLE_NAME,
           I.UNIQUENESS, --是否唯一索引
           T.INDEX_NAME,
-          T.INDEX_TYPE`, username, tablename))
+          I.INDEX_TYPE`, username, tablename))
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -189,7 +189,7 @@ select x.constraint_name,
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -211,7 +211,7 @@ func QueryOracleDBTableCheckKeyDetailInfo(username, tablename string) error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -235,7 +235,7 @@ func QueryOracleDBTableUniqueKeyDetailInfo(username, tablename string) error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -263,7 +263,7 @@ func QueryOracleDBTablePrimaryKeyDetailInfo(username, tablename string) error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -290,7 +290,7 @@ func queryOracleDBTableDetailInfo(username string) error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -318,7 +318,7 @@ func queryOracleDBTableDetailInfoByUser(username, tablename string) error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 

@@ -69,7 +69,7 @@ func init() {
 	})
 	sqlCmd.AddCommand(&grumble.Command{
 		Name: "summary",
-		Help: "query oracle db sql a certain period of time summary info according to sql_id",
+		Help: "query oracle db sql a certain period of time summary info according to sql_id, startTime, endTime",
 		Args: func(a *grumble.Args) {
 			a.String("sqlid", "specify sql id")
 			a.String("startTime", "specify query start time")
@@ -115,7 +115,7 @@ func init() {
 		Args: func(a *grumble.Args) {
 			a.String("sqlid", "specify sql id")
 			a.String("childnumber", "specify sql plan child number")
-			a.String("format", "specify sql plan output format")
+			a.String("format", "specify sql plan output format, options: [basic,typical,serial,all,advanced]", grumble.Default("typical"))
 		},
 		Run: func(c *grumble.Context) error {
 			if err := oracle.QueryOracleDBSQLPlanByCursor(
@@ -133,7 +133,7 @@ func init() {
 		Args: func(a *grumble.Args) {
 			a.String("sqlid", "specify sql id")
 			a.String("childnumber", "specify sql plan child number")
-			a.String("format", "specify sql plan output format")
+			a.String("format", "specify sql plan output format, options: [basic,typical,serial,all,advanced]", grumble.Default("typical"))
 		},
 		Run: func(c *grumble.Context) error {
 			if err := oracle.QueryOracleDBSQLPlanByXplan(

@@ -36,7 +36,7 @@ func QueryOracleDBInfo() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -51,7 +51,7 @@ func QueryOracleInstanceListInfo() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -99,7 +99,7 @@ select name,
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -113,7 +113,7 @@ func QueryOracleTablespaceSummaryInfo() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -136,7 +136,7 @@ func QueryOracleLastBackupInfo() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -149,6 +149,6 @@ func QueryOracleParamsListInfo() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }

@@ -25,11 +25,20 @@ type Table struct {
 	*tablewriter.Table
 }
 
-func NewTableStyle(wt io.Writer, header []string, data [][]string) {
+func NewMarkdownTableStyle(wt io.Writer, header []string, data [][]string) {
 	table := tablewriter.NewWriter(wt)
 	table.SetHeader(header)
 	table.SetBorders(tablewriter.Border{Left: true, Top: true, Right: true, Bottom: true})
 	table.SetAlignment(tablewriter.ALIGN_LEFT) // Set Alignment
+	table.AppendBulk(data)
+	table.Render()
+}
+
+func NewColMarkdownTable(wt io.Writer, header []string, data [][]string) {
+	table := tablewriter.NewWriter(wt)
+	table.SetColWidth(3000)
+	table.SetHeader(header)
+	table.SetBorders(tablewriter.Border{Left: false, Top: false, Right: false, Bottom: true})
 	table.AppendBulk(data)
 	table.Render()
 }

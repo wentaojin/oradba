@@ -144,7 +144,7 @@ func QueryOracleDBDASHTOPRecentAnHour() error {
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }
 
@@ -154,11 +154,11 @@ func QueryOracleDBDASHTOPRecentAnHour() error {
 func QueryOracleDBDASHTOPHistoryByTimeLimit(startTime, endTime string) error {
 	columns, values, err := db.Query(fmt.Sprintf(`SELECT *
   FROM (SELECT /*+ LEADING(a) USE_HASH(u) */
-         LPAD(ROUND(RATIO_TO_REPORT(COUNT(*)) OVER() * 100) || '%', 5, ' ') "%This",
+         LPAD(ROUND(RATIO_TO_REPORT(COUNT(*)) OVER() * 100) || '%%', 5, ' ') "%%This",
          username,
          session_id,
          session_serial#,
-         nvl(sql_id, 'Null'),
+         nvl(sql_id, 'Null') sqlid,
          case SQL_OPCODE
            when 1 then
             'create table'
@@ -201,7 +201,7 @@ func QueryOracleDBDASHTOPHistoryByTimeLimit(startTime, endTime string) error {
            else
             'other'
          end command_type,
-         NVl(event, 'Null'),
+         NVl(event, 'Null') event,
          ROUND(COUNT(*) / (((sysdate) - (sysdate - 1 / 24)) * 86400), 1) AAS,
          COUNT(*) "TotalSeconds"
         --, SUM(CASE WHEN wait_class IS NULL           THEN 1 ELSE 0 END) "CPU"
@@ -247,11 +247,11 @@ func QueryOracleDBDASHTOPHistoryByTimeLimit(startTime, endTime string) error {
                dba_users u
          WHERE a.user_id = u.user_id(+)
            AND session_type = 'FOREGROUND'
-           AND sample_time BETWEEN '%s' AND '%s'
+           AND to_char(sample_time,'yyyy-mm-dd hh24:mi:ss') BETWEEN '%s' AND '%s'
            AND snap_id In
                (SELECT snap_id
                   From dba_hist_snapshot
-                 WHERE sample_time BETWEEN sql4 := AND sql5 :=) --For partition pruning
+                 WHERE to_char(sample_time,'yyyy-mm-dd hh24:mi:ss') BETWEEN '%s' AND '%s') --For partition pruning
          GROUP BY username,
                   session_id,
                   session_serial#,
@@ -265,10 +265,10 @@ func QueryOracleDBDASHTOPHistoryByTimeLimit(startTime, endTime string) error {
                   sql_id,
                   SQL_OPCODE,
                   event)
- WHERE ROWNUM <= 10`, startTime, endTime))
+ WHERE ROWNUM <= 10`, startTime, endTime, startTime, endTime))
 	if err != nil {
 		return err
 	}
-	util.NewTableStyle(os.Stdout, columns, values)
+	util.NewMarkdownTableStyle(os.Stdout, columns, values)
 	return nil
 }

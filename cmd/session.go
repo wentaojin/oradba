@@ -109,7 +109,7 @@ func init() {
 	})
 	sessionCmd.AddCommand(&grumble.Command{
 		Name: "blocking",
-		Help: "query oracle db current session block info without lock mode include dead-lock",
+		Help: "query oracle db current session block info without lock mode but with resolve lock suggest include dead-lock",
 		Run: func(c *grumble.Context) error {
 			if err := oracle.QueryOracleDBSessionBlocking(); err != nil {
 				return err
