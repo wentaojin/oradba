@@ -12,5 +12,8 @@ Oracle DBA 常用基本 SQL 查询命令行工具 oraz，支持 Oracle 会话、
 2、查看环境变量 LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/data1/soft/client/instantclient_19_8
 echo $LD_LIBRARY_PATH
+
+3、程序运行，配置文件示例见 conf 目录
+./oradba --config config.toml
 ```
 
