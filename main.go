@@ -16,8 +16,8 @@ limitations under the License.
 package main
 
 import (
-	"github.com/WentaoJin/oradba/cmd"
 	"github.com/desertbit/grumble"
+	"github.com/wentaojin/oradba/cmd"
 )
 
 func main() {

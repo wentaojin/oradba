@@ -1,4 +1,4 @@
-module github.com/WentaoJin/oradba
+module github.com/wentaojin/oradba
 
 go 1.15
 

@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/WentaoJin/oradba/db"
-	"github.com/WentaoJin/oradba/pkg/util"
+	"github.com/wentaojin/oradba/db"
+	"github.com/wentaojin/oradba/pkg/util"
 )
 
 func QueryOracleDBRMANProcess() error {

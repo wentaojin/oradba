@@ -16,7 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/WentaoJin/oradba/db"
+	"github.com/wentaojin/oradba/db"
 
 	"github.com/desertbit/grumble"
 	"github.com/fatih/color"

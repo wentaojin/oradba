@@ -19,9 +19,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/WentaoJin/oradba/pkg/util"
+	"github.com/wentaojin/oradba/pkg/util"
 
-	"github.com/WentaoJin/oradba/db"
+	"github.com/wentaojin/oradba/db"
 )
 
 func QueryOracleDBTableDetailInfo(username, tablename string) error {

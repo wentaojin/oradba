@@ -16,8 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/WentaoJin/oradba/pkg/oracle"
 	"github.com/desertbit/grumble"
+	"github.com/wentaojin/oradba/pkg/oracle"
 )
 
 func init() {
