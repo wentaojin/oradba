@@ -17,3 +17,9 @@ echo $LD_LIBRARY_PATH
 ./oradba --config config.toml
 ```
 
+示例图
+
+![](./image/47a27fdee9350dfeb5fb6500de9f772.png)
+
+![](./image/42192e05536deb3c47695a249fbe6fa.png)
+
